@@ -1,0 +1,44 @@
+services:
+  payment-maxwell:
+    image: zendesk/maxwell:latest
+    container_name: payment-maxwell
+    depends_on:
+      - payment-db
+    restart: on-failure
+    command: >
+      bin/maxwell
+      --user=root
+      --password=1
+      --host=payment-db
+      --port=3306
+      --producer=kafka
+      --kafka.bootstrap.servers=192.168.1.5:9092
+      --kafka_topic=payment-db
+      --filter=include:payment./.*_context$/
+    networks:
+      - 7kala-payment
+      - 7kala
+    tty: true
+  payment-db:
+    image: mysql
+    container_name: payment-db
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: payment
+      MYSQL_USER: debezium
+      MYSQL_PASSWORD: dbz
+    command: --server-id=1 --log-bin=master --binlog-format=ROW --bind-address=0.0.0.0
+    ports:
+      - "3312:3306"
+    volumes:
+      - payment-db:/var/lib/mysql
+    networks:
+      - 7kala-payment
+      - 7kala
+volumes:
+  payment-db:
+networks:
+  7kala-payment:
+  7kala:
+    external: true
