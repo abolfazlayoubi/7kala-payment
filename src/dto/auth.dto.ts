@@ -1,5 +1,3 @@
-import { PickType } from "@nestjs/swagger";
-import { CustomerContextEntity } from "../entities/customerContext.entity";
 import { IsEmail, IsString, MinLength } from "class-validator";
 
 export enum CustomerUserRole {

@@ -21,3 +21,47 @@ export class StoresServiceContext {
 
   phone: string;
 }
+
+export enum OrderStatus {
+  PROCESSING = "processing",
+  REFUNDED = "refunded",
+}
+
+export class CartServiceC2OrderContext {
+  id: number;
+
+  cartId: number;
+
+  amount: number;
+
+  total: number;
+
+  deliveryTime: string;
+
+  customerName: string;
+
+  shippingAddress: {
+    zip: string;
+    city: string;
+    state: string;
+    country: string;
+    street_address: string;
+  };
+
+  storeId: number;
+
+  store: number;
+
+  items: {
+    productId: number;
+    productName: string;
+    qty: number;
+    price: number;
+  }[];
+
+  status: OrderStatus;
+
+  createdAt: Date;
+
+  updatedAt: Date;
+}

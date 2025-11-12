@@ -6,8 +6,6 @@ import { CustomerContextEntity } from "../entities/customerContext.entity";
 import { JwtService } from "@nestjs/jwt";
 import { CustomerAddressContextEntity } from "../entities/customerAddressContext.entity";
 import { jwtConstants } from "./auth.constants";
-import * as url from "node:url";
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -70,7 +68,7 @@ export class AuthService {
       },
     });
 
-    let add =
+    const add =
       (
         await this.repoAddress.find({
           where: {

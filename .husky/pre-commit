@@ -1,1 +1,1 @@
-npm test
+export NODE_ENV=production &&  yarn prettier --write src/ && yarn eslint src/

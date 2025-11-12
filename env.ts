@@ -3,7 +3,7 @@ import { join } from "path";
 import process from "node:process";
 
 // Load environment variables from .env file
-dotenv.config({ path: join(__dirname, ".env") });
+dotenv.config({ path: join(".env") });
 export const env = {
   nodeEnv: process.env.PAYMENT_NODE_ENV || "development",
   kafka: {

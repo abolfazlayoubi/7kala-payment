@@ -4,6 +4,8 @@ import { AppService } from "./app.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { env } from "../env";
 import { AuthModule } from "./auth/auth.module";
+import { PaymentModule } from "./payment/payment.module";
+import { CartModule } from "./cart/cart.module";
 @Module({
   controllers: [AppController],
   providers: [AppService],
@@ -21,6 +23,8 @@ import { AuthModule } from "./auth/auth.module";
       synchronize: env.nodeEnv !== "production",
     }),
     AuthModule,
+    PaymentModule,
+    CartModule,
   ],
 })
 export class AppModule {}
