@@ -9,11 +9,6 @@ export class CustomerContextEntity {
   @Column({
     type: "varchar",
   })
-  @Index({
-    unique: true,
-  })
-  email: string;
-
   @Column({
     type: "varchar",
     nullable: true,

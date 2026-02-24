@@ -1,25 +1,22 @@
-import { Controller, Get, Post, Body, UseGuards, Req } from "@nestjs/common";
+import { Controller, Get, Post, Body, UseGuards, Req, UseInterceptors, UsePipes, ValidationPipe, Ip, Headers } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { AuthResponse, LoginDto, RegisterDto, TokenUserSchema } from "src/dto/auth.dto";
+import { AuthResponse, OtpBody, RegisterDto, TokenUserSchema } from "src/dto/auth.dto";
 import { AuthGuard } from "./auth.guard";
+import { ApiBody, ApiDefaultResponse, ApiOperation } from "@nestjs/swagger";
+import { PersianToEnglishNumberInterceptor } from "../interceptors/PersianToEnglishNumber.interceptor";
 
 @Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post("token")
-  login(@Body() loginDto: LoginDto): Promise<AuthResponse> {
-    return this.authService.login(loginDto);
-  }
-
-  @Post("register")
-  createAccount(@Body() registerDto: RegisterDto) {
-    return this.authService.register(registerDto);
-  }
-
-  @UseGuards(AuthGuard)
-  @Get("me")
-  me(@Req() req: { user: TokenUserSchema }) {
-    return this.authService.me(req.user);
+  @Post()
+  @ApiOperation({ summary: "ارسال otp" })
+  @ApiBody({ type: OtpBody })
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @UseInterceptors(PersianToEnglishNumberInterceptor)
+  async sendCode(@Body() body: OtpBody, @Headers("x-forwarded-for") ip: string, @Ip() IP: string) {
+    let userIp = (await this.authService.ipCheck(ip || IP)) ? body.ip : ip || IP;
+    userIp = userIp?.split(",")[0].trim().replace("::ffff:", "");
+    // return this.authService.sendCode(body, userIp);
   }
 }

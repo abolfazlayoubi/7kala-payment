@@ -1,12 +1,40 @@
-import { IsEmail, IsString, MinLength } from "class-validator";
+import { IsEmail, IsIn, IsOptional, IsString, Matches, MinLength } from "class-validator";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 export enum CustomerUserRole {
   CUSTOMER = "customer",
 }
 
-export class LoginDto {
-  email: string;
-  password: string;
+class LookUpSendType {}
+
+export class OtpBody {
+  @ApiProperty({
+    example: "09217804632",
+  })
+  // @IsPhoneNumber("IR")
+  // @IsMobilePhone("fa-IR")
+  @Matches("^(\\+98|0)?9\\d{9}$")
+  mobile: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  ip?: string;
+
+  @ApiPropertyOptional({
+    example: "otp",
+  })
+  @IsOptional()
+  @IsString()
+  @IsIn(["indexdown", "otp", "server", "codemodiseh", "otp7kala"])
+  template: "indexdown" | "otp" | "server" | "codemodiseh" | "otp7kala" = "otp";
+
+  @ApiPropertyOptional({
+    example: "otp",
+  })
+  @IsOptional()
+  @IsString()
+  type?: LookUpSendType;
 }
 export class AuthResponse {
   token: string;
