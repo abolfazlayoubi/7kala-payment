@@ -24,7 +24,7 @@ export const ENV_CONFIG = {
   logger: {
     exporter: {
       otlp: {
-        host: process.env.OTEL_EXPORTER_OTLP_ENDPOINT || "http://otel-collector:4318",
+        host: process.env.OTEL_EXPORTER_OTLP_ENDPOINT || "http://192.168.1.7:4318",
         protocol: process.env.OTEL_EXPORTER_PROTOTYPE || "http/protobuf",
       },
     },
